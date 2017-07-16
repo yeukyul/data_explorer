@@ -1,0 +1,59 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+apply plugin: 'findbugs'
+
+// apply from: 'javafx.plugin'
+
+group = 'cs214-team-1'
+
+version = '0.0.1'
+
+// javafx {
+//     mainClass = 'org.qcmix.graphicinterface.QCMixInterface'
+// }
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    runtime fileTree(dir: 'lib', include: '*.jar')
+    // runtime fileTree(dir: 'lib/commons-io-2.5', include: '*.jar')
+
+    compile 'org.jsoup:jsoup:1.10.2'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+
+
+    compile('se.michaelthelin.spotify:spotify-web-api-java:1.5.0') {
+        exclude group: "commons-beanutils", module: "commons-beanutils"
+
+    }
+    compile 'commons-beanutils:commons-beanutils:20030211.134440'
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        // html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
+    }
+}
+
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: "<URL>")
+//        }
+//    }
+//}
+
+mainClassName = "framework.gui.FrameworkGUI"

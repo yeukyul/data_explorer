@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+	<meta name="viewport" content="width=device-width, initial-scale=0.8">
+    
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Shade|Josefin+Sans" rel="stylesheet">
+
+    <!-- Compiled and minified materialize.CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- external CSS -->
+    <link rel="stylesheet" href="network.css">
+
+</head>
+<body>
+
+        
+    <!-- main graph -->
+    <div id="graph"></div>
+    
+    <!-- text for opening scene -->
+    <div class="center-block">
+        <h1 id="title">Data Explorer</h1>
+        <h5 id="description"style="font-family:'Josefin Sans', sans-serif;">CREATED WITH JAVAFX AND D3.</h5>
+        <br>
+        
+        <!-- input field -->
+        <div class="row">
+            <div class="input-field underline col-sm-8">
+                <input placeholder="Choose an artist to start exploring" id="textinput" type="text">
+            </div>
+            <div class="col-sm-4">
+                <button type="button" id="submit">START</button>
+            </div>
+        </div>
+        
+        <!-- div for error message display -->
+        <div id="error"></div>
+    </div>
+
+    
+    <!-- before user pressed start, the node at the back should be flowing at random -->
+    <!-- after user pressed start, the center block of text should fade away -->
+    
+
+    <!-- d3.js -->
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- external javascript -->
+    <script src="js/main.js"></script>
+    <script src="js/graph.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/network.js"></script>
+    <script src="js/update.js"></script>
+	</body>
+</html>

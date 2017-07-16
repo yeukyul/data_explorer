@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- cited from https://bl.ocks.org/mbostock/1095795 -->
+<head>
+    
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- scripts -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <!-- external javascript -->
+    <script src="js/main.js"></script>
+    <script src="js/network.js"></script>
+    
+</head>
+
+<!-- main content -->
+<div id="content">
+    
+    <!-- little animation -->
+    <svg width="300" height="300">
+    </svg>
+    
+    <!-- instruction -->
+    <div id="instruction">Please select plug-ins.</div>
+    <br>
+    
+    <span class="btn-group">
+  <span class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown">
+        <span id="dataPrompt">Data Plug-in</span>
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" role="menu" id="dataMenu" aria-labelledby="menu1">
+    </ul>
+  </span>   
+  <span class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        <span id="displayPrompt">Display Plug-in</span>
+    <span class="caret"></span></button>
+      <ul class="dropdown-menu" id="displayMenu" role="menu" aria-labelledby="menu1">
+    </ul>
+  </span>
+</span>
+    
+    <!-- start button -->
+    <button type="button" id="start" class="btn btn-outline-secondary" href="#">START</button>
+
+<style>
+    
+    html {
+        background-color: #B16668;
+    }
+    
+    * {
+        font-family: "Josefin Sans", sans-serif;
+    }
+    
+    .node {
+          fill: #fff;
+          stroke: #fff;
+          stroke-width: 1.5px;
+    }
+    
+    .link {
+      fill: none;
+      stroke: white;
+      stroke-width: 1.5px;
+    }
+
+    #content {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+        font-size: 20pt; 
+    }
+    
+    .btn {
+        color: white;
+        background-color: transparent;
+        border: 2px solid white;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 15pt;
+    }
+    
+    .btn:hover {
+        color: #B16668;
+        background-color: white;
+        border: 2px solid #B16668;
+    }
+    
+    .dropdown {
+        border: 0;
+    }
+</style>
+<script>
+    
+var selectedData = null,
+    selectedDisplay = null;
+    
+/* drop down handling */
+function showDisplayOptions(optionList) {
+	  var options = "";
+    for (var i = 0; i < optionList.length; i++) {
+        var thisOption = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="onSelectDisplay(\'' + optionList[i]+'\')">' + optionList[i] + '</a></li>';
+        options += thisOption;
+    }
+    $('#displayMenu').html(options);
+	return true;
+}
+    
+function showDataOptions(optionList) {
+	var options = "";
+    for (var i = 0; i < optionList.length; i++) {
+        var thisOption = '<li role="presentation"><a role="menuitem" tabindex="-1" href="#" onclick="onSelectData(\'' + optionList[i]+'\')">' + optionList[i] + '</a></li>';
+        options += thisOption;
+    }
+    $('#dataMenu').html(options);
+	return true;
+}
+
+    
+function onSelectDisplay(name) {
+    selectedDisplay = name;
+    $('#displayPrompt').html(name);
+} 
+    
+function onSelectData(name) {
+    selectedData = name;
+    $('#dataPrompt').html(name);
+}
+    
+    
+$('#start').click(function() {
+    // invoking java function 
+    if (selectedData == null || selectedDisplay == null) {
+        return;
+    }
+    java.startClicked(selectedData, selectedDisplay);
+})
+
+    
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    color = d3.scaleOrdinal(d3.schemeCategory10);
+
+var a = {id: "a"},
+    b = {id: "b"},
+    c = {id: "c"},
+    nodes = [a, b, c],
+    links = [];
+
+var simulation = d3.forceSimulation(nodes)
+    .force("charge", d3.forceManyBody().strength(-1000))
+    .force("link", d3.forceLink(links).distance(200))
+    .force("x", d3.forceX())
+    .force("y", d3.forceY())
+    .alphaTarget(1)
+    .on("tick", ticked);
+
+var g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"),
+    link = g.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5).selectAll(".link"),
+    node = g.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5).selectAll(".node");
+
+restart();
+
+d3.timeout(function() {
+  links.push({source: a, target: b}); 
+  links.push({source: b, target: c}); 
+  links.push({source: c, target: a}); 
+  restart();
+}, 1000);
+
+d3.interval(function() {
+  nodes.pop(); 
+  links.pop(); 
+  links.pop(); 
+  restart();
+}, 2000, d3.now());
+
+d3.interval(function() {
+  nodes.push(c); // Re-add c.
+  links.push({source: b, target: c}); 
+  links.push({source: c, target: a}); 
+  restart();
+}, 2000, d3.now() + 1000);
+
+function restart() {
+
+  // Apply the general update pattern to the nodes.
+  node = node.data(nodes, function(d) { return d.id;});
+  node.exit().remove();
+  node = node.enter().append("circle").attr("fill", "white").attr("r", 8).merge(node);
+
+  // Apply the general update pattern to the links.
+  link = link.data(links, function(d) { return d.source.id + "-" + d.target.id; });
+  link.exit().remove();
+  link = link.enter().append("line").merge(link);
+
+  // Update and restart the simulation.
+  simulation.nodes(nodes);
+  simulation.force("link").links(links);
+  simulation.alpha(1).restart();
+}
+
+function ticked() {
+  node.attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+
+  link.attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+}
+
+</script>
+	

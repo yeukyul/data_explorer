@@ -1,0 +1,202 @@
+html {
+    background: #65808c;
+    color: white;
+    overflow: hidden;
+}
+
+h1 {
+    font-family: "Bungee Shade", sans-serif;
+    font-size: 80pt;
+}
+
+h5 {
+    color: lightgrey;
+}
+
+.center-block {
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+}
+
+
+input { 
+    font-family: "Avenir Book", sans-serif;
+    font-size: 14pt;
+}
+
+
+.btn {
+    color: #65808c;
+    background-color: white;
+    border: 2px solid #65808c;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 15pt;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 5%;
+    box-shadow: 5px 5px 5px rgba(50, 50, 80, 0.2);
+    font-weight: bold;
+}
+
+.btn:hover {
+    color: white;
+    background-color: #65808c;
+    border: 2px solid white;
+    font-weight: normal;
+}
+
+#graph {
+    position: fixed;
+    left: 0%;
+    bottom: 0%;
+}
+
+#error {
+    color: #E8CF84;
+    font-size: 15pt;
+}
+
+#title {
+    color: white;
+}
+
+#textinput {
+    color: white;
+    width: 100%;
+}
+
+.underline input[type="text"] {
+  color: white;
+  padding: 10px;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+  background-color: transparent;
+}
+
+.underline input[type="text"]:focus,
+.underline input[type="text"].focus {
+  border-bottom: solid 2px #4db6ac;
+}
+
+/* for main graph media pane */
+#mainPane {
+    
+    /* layout of the Pane */
+    position: fixed;
+    left: 5%;
+    top: 5%;
+    width: 40%;
+    height: 90%;
+    background: #4C6069;
+    
+    /* to put shadow around the box */
+    box-shadow: 10px 10px 5px rgba(50, 50, 80, 0.2);
+    
+    /* allow scolling when media too large */
+    overflow-y:auto;
+    
+    /* round borders */
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    border-radius: 25px; /* future proofing */
+    -khtml-border-radius: 25px; /* for old Konqueror browsers */
+    
+    /* to lay under SVG graph */
+    z-index: -1;
+}
+
+#name {
+    margin-top: 5%;
+    text-align: center;
+    font-family: "Megrim", "Nixie One", sans-serif;
+    font-size: 35pt;
+}
+
+#mainMedia img,
+#mainMedia iframe,
+#mainMedia video
+{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+
+#subMedia {
+    margin-top: 2%;
+    text-align: center;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 12pt;
+    padding: 10px;
+}
+
+
+#subMedia .col img,
+#subMedia .col iframe,
+#subMedia .col video
+{
+   max-width: 100%;
+    max-height: 100%;
+}
+
+
+.label {
+    color: #4C6069;
+    text-align: center;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 15pt;
+}
+
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: lightgrey;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: lightgrey;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: lightgrey;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: lightgrey;
+}
+
+#network {
+    position: fixed;
+    left: 45%;
+    z-index: 30;
+}
+
+input:focus{
+    outline: none;
+}
+
+input {
+    max-width: 100%;
+}
+
+/* for bg graphs */
+.link {
+  fill: none;
+  stroke: lightgrey;
+  stroke-width: 1.5px;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+}
+
+.node {
+  z-index: 20;
+}
